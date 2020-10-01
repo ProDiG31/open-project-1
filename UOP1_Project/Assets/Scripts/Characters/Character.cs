@@ -128,20 +128,23 @@ public class Character : MonoBehaviour
         }
     }
 
+
     private void GroundDirection()
     {
         //setting up groundRay
-        groundRay.origin = transform.position + collisionPoint + Vector3.up * 0.05f;
-        groundRay.direction = Vector3.down;
+        //groundRay.origin = transform.position + collisionPoint + Vector3.up * 0.05f;
+        groundRay.origin = collisionPoint + Vector3.up * 0.05f;
+        groundRay.direction = Vector3.down; // Is needed to set groundRay.direction each time ? 
 
-        //reseting values
-        forwardMultiplier = 1;
-        fallMultiplier = 1;
-        fallDirection.rotation = Quaternion.Euler(0, 0, 0);
-        slopeAngle = 0;
-        forwardAngle = 0;
         if (Physics.Raycast(groundRay, out groundHit, 0.5f))
         {
+            //reseting values
+            forwardMultiplier = 1;
+            fallMultiplier = 1;
+            fallDirection.rotation = Quaternion.Euler(0, 0, 0);
+            slopeAngle = 0;
+            forwardAngle = 0;
+
             //getting how steep is the slope and where the player is facing compared to the slope
             slopeAngle = Vector3.Angle(transform.up, groundHit.normal);
             forwardAngle = Vector3.Angle(transform.forward, groundHit.normal) - 90;
@@ -163,9 +166,9 @@ public class Character : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //updates where the collider is hiting;
+        //updates where the collider is hiting; (Keeping collisionPoint world space position)
         collisionPoint = hit.point;
-        collisionPoint = (collisionPoint - transform.position);
+        //  collisionPoint = (collisionPoint - transform.position);
     }
 
     //---- COMMANDS ISSUED BY OTHER SCRIPTS ----
